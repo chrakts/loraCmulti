@@ -84,9 +84,20 @@ void gotInfoFromLora() // reicht, die über LORA empfangenene Daten an CNET weit
           }
           else // ohne Verschlüsselung
           {
+            char source[3];
+            source[0] = rxMessage[6];
+            source[1] = rxMessage[7];
+            source[2] = 0;
+
             strcpy(relInfo[relInfoToSend].content, rxMessage );
             relInfo[relInfoToSend].medium = VIA_CNET; // Funk
             newInfo2Send();
+            loraCmulti.setAlternativeNode(source);
+            loraCmulti.broadcastInt16(rxRssi,'R','x','i');
+            strcpy(relInfo[relInfoToSend].content, loraCmulti.get() );
+            relInfo[relInfoToSend].medium = VIA_CNET; // Funk
+            newInfo2Send();
+            loraCmulti.resetNode();
           }
         }
       }
@@ -140,14 +151,13 @@ bool decryptMessage(char *message, char *deMessage)
 
 void sendViaRelay(char *relayText) // schickt die vom CNET empfangenen Daten über LORA weiter
 {
-  LED_GRUEN_ON;
   strcpy(relInfo[relInfoToSend].content,relayText);
   relInfo[relInfoToSend].medium = VIA_LORA; // Funk
   newInfo2Send();
   free(relayText);
 }
 
-void processRelaisInfos(Communication *cm)
+bool processRelaisInfos(Communication *cm)
 {
   if(relInfoToSend!=relInfoFinished)
   {
@@ -160,18 +170,17 @@ void processRelaisInfos(Communication *cm)
       case VIA_LORA:
 
         LoRa_sendMessage(relInfo[relInfoFinished].content);
-        cm->print(relInfo[relInfoFinished].content);
-        LED_GRUEN_OFF;
-
         //while(txIsReady==false)
         //{}
-        LoRa_rxMode();
+        //LoRa_rxMode();
+        cm->print(relInfo[relInfoFinished].content);
       break;
     }
     relInfoFinished++;
     if(relInfoFinished>=RELAISINFONUM)
       relInfoFinished = 0;
   }
+  return(relInfoFinished==relInfoToSend);
 }
 
 
