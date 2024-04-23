@@ -35,7 +35,7 @@ typedef struct relaisInfo RelaisInfo;
 
 void test4Received();
 void sendViaRelay(char *relayText);
-void processRelaisInfos(Communication *cm);
+bool processRelaisInfos(Communication *cm);
 void onTxDone();
 void onReceive(int packetSize);
 void LoRa_sendMessage(char *message);
