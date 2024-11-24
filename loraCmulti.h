@@ -7,13 +7,16 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include <avr/sleep.h>
+#include <ctype.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 #include "LoRa.h"
-#include "Cmulti2Buffer_v02.h"
+//#include "Communication.h"
+//#include "ComReceiver.h"
+//#include "Cmulti2Buffer_v02.h"
 
 
 #define RELAISINFONUM 6

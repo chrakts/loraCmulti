@@ -1,5 +1,5 @@
+#include "Operators.h"
 #include "loraCmulti.h"
-#include "../communication/Communication.h"
 #include "myConstants.h"  // nur benötigt für LEDs
 #include "External.h"     // nur benötigt für "Node"
 
@@ -20,7 +20,7 @@ void test4Received()
 {
     if(rxIsReady==true)
     {
-      LED_BLAU_ON;
+      //LED_BLAU_ON;
       gotInfoFromLora();
       rxIsReady=false;
     }
@@ -165,7 +165,7 @@ bool processRelaisInfos(Communication *cm)
     {
       case VIA_CNET:
         cm->print(relInfo[relInfoFinished].content);
-        LED_BLAU_OFF;
+        //LED_BLAU_OFF;
       break;
       case VIA_LORA:
 
